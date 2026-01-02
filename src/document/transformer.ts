@@ -1218,6 +1218,10 @@ export class Transformer {
             component.parameters.forEach((param) => {
                 if (param.type == ParameterType.Parameter) {
                     if (param.isExpression) {
+                    //     const expressionSlug = this.makeSlug(param.content.length);
+                    //     this.registerExpressionParameter(expressionSlug, param);
+                    //     value += expressionSlug + ' ';
+                    // } else {
                         value += param.content + ' ';
                     }
                 } else if (param.type == ParameterType.Attribute) {
