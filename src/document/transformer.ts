@@ -804,7 +804,7 @@ export class Transformer {
             } else {
                 result += "\n";
             }
-            
+
             if (directiveName == 'php' || directiveName == 'verbatim') {
                 virtualSlug = this.makeSlug(15);
                 result += this.pair(virtualSlug);
@@ -1218,10 +1218,6 @@ export class Transformer {
             component.parameters.forEach((param) => {
                 if (param.type == ParameterType.Parameter) {
                     if (param.isExpression) {
-                        const expressionSlug = this.makeSlug(param.content.length);
-                        this.registerExpressionParameter(expressionSlug, param);
-                        value += expressionSlug + ' ';
-                    } else {
                         value += param.content + ' ';
                     }
                 } else if (param.type == ParameterType.Attribute) {
@@ -1867,7 +1863,7 @@ export class Transformer {
             ${directive.documentContent}
         ${directive.isClosedBy?.sourceContent}
         `;
-        
+
             if (this.transformOptions.formatJsAttributes && isAttributeFormattingEnabled) {
                 setIsFormattingAttributeContent(true);
                 try {
@@ -1885,11 +1881,11 @@ export class Transformer {
                 enableAttributeProcessing();
                 setIsFormattingAttributeContent(false);
             }
-        
+
             const indentLevel = IndentLevel.relativeIndentLevel(slug, value);
-        
+
             formatContent = this.adjustAttributeFormattingResults(formatContent);
-        
+
             formatContent = IndentLevel.shiftIndent(
                 formatContent,
                 indentLevel,
@@ -1897,9 +1893,9 @@ export class Transformer {
                 this.transformOptions,
                 false, false
             );
-        
+
             value = StringUtilities.safeReplace(value, slug, formatContent);
-        }        
+        }
 
         return value;
     }
@@ -1909,10 +1905,10 @@ export class Transformer {
 
         for (const [slug, directive] of this.contentDirectives) {
             let directiveResult = await this.printDirective(directive, 0);
-        
+
             if (directiveResult.includes("\n")) {
                 const relativeIndent = this.indentLevel(slug);
-        
+
                 if (relativeIndent > 0) {
                     directiveResult = await IndentLevel.shiftIndent(
                         directiveResult,
@@ -1922,7 +1918,7 @@ export class Transformer {
                     );
                 }
             }
-        
+
             value = StringUtilities.safeReplace(value, slug, directiveResult);
         }
 
@@ -1935,7 +1931,7 @@ export class Transformer {
         for (const [slug, echo] of this.dynamicEchoBlocks) {
             const echoContent = await EchoPrinter.printEcho(echo, this.transformOptions, this.phpFormatter, this.indentLevel(slug), this.pintTransformer ?? Transformer.sharedPintTransformer);
             value = StringUtilities.safeReplaceAllInString(value, slug, echoContent);
-        }        
+        }
 
         return value;
     }
